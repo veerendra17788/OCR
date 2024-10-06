@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI based OCR</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>AI based OCR</h1>
+            <h2>Upload an Image for OCR</h2>
+        </header>
+        {% if text %}
+            <div class="result">
+                <h3>Extracted Text:</h3>
+                <p class="extracted-text">{{ text }}</p>
+                <button class="button" onclick="location.href='{{ upload_url }}'">Upload another image</button>
+            </div>
+        {% else %}
+            <form action="{{ url_for('upload_file') }}" method="post" enctype="multipart/form-data">
+                <div class="file-input">
+                    <input type="file" name="file" id="file-input" class="file-input__input">
+                    <label class="file-input__label" for="file-input">
+                        <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="upload" class="svg-inline--fa fa-upload fa-w-16" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M472 352h-64c-4.42 0-8 3.58-8 8v80H112v-80c0-4.42-3.58-8-8-8H40c-4.42 0-8 3.58-8 8v96c0 17.67 14.33 32 32 32h384c17.67 0 32-14.33 32-32v-96c0-4.42-3.58-8-8-8zM372.68 242.91l-100.63-94.61c-6.78-6.38-17.71-6.38-24.49 0l-100.63 94.61C136.71 248.35 144.03 256 152.97 256h56v96h96v-96h56c8.95 0 16.26-7.65 11.71-13.09zM364.8 192H344v-80c0-26.51-21.49-48-48-48H216c-26.51 0-48 21.49-48 48v80h-20.8C141.39 192 128 204.57 128 220.57V352h48V220.57C176 209.67 184.67 200 196.57 200H224v-80h64v80h27.43c11.9 0 20.57 9.67 20.57 20.57V352h48V220.57C384 204.57 370.61 192 364.8 192z"></path></svg>
+                        <span>Choose a file</span>
+                    </label>
+                </div>
+                <button type="submit" class="button">Upload Image</button>
+            </form>
+            {% if filename %}
+                <p class="message success">File uploaded successfully: {{ filename }}</p>
+            {% endif %}
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    <ul class="messages">
+                    {% for message in messages %}
+                        <li>{{ message }}</li>
+                    {% endfor %}
+                    </ul>
+                {% endif %}
+            {% endwith %}
+        {% endif %}
+    </div>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
